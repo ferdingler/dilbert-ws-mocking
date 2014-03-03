@@ -2,7 +2,7 @@
  * EndpointController
  *
  * @module      :: Controller
- * @description	:: A set of functions called `actions`.
+ * @description :: A set of functions called `actions`.
  *
  *                 Actions contain code telling Sails how to respond to a certain type of request.
  *                 (i.e. do stuff, then send some JSON, show an HTML page, or redirect to another URL)
@@ -64,8 +64,6 @@ module.exports = {
    */
    serve: function (req, res) {
 
-    var Chance = require('chance');
-    var chance = new Chance();
     var endpointId = req.param('uuid');
     var response = {};
 
@@ -74,8 +72,8 @@ module.exports = {
         response = endpoint.data;
       }else if(endpoint.type === 'singlevalue'){
         endpointData = endpoint.data[endpoint.data.length - 1];
-        if(endpointData.valueType === 'randomString'){
-          response = chance.string();
+        if(endpointData.valueType != 'custom'){
+          response = RandomService.getRandomForType(endpointData.valueType);
         }
       }
       return res.json(response, endpoint.httpStatus);
