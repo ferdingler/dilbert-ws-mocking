@@ -52,9 +52,7 @@ module.exports = {
         return res.json('Error creating endpoint');
       }
 
-      return res.json({
-        url: 'http://localhost:1337/' + endpointId
-      });
+      return res.json(endpointId);
       
     });
 
