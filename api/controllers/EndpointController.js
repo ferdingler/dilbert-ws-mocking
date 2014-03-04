@@ -19,6 +19,8 @@ module.exports = {
     
   create: function(req, res){
 
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+
     var Chance = require('chance');
     var chance = new Chance();
     
@@ -64,6 +66,9 @@ module.exports = {
    */
    serve: function (req, res) {
 
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Content-Type', 'application/json');
+
     var endpointId = req.param('uuid');
     var response = {};
 
@@ -76,7 +81,8 @@ module.exports = {
           response = RandomService.getRandomForType(endpointData.valueType);
         }
       }
-      return res.json(response, endpoint.httpStatus);
+
+      return res.send(response, endpoint.httpStatus);
     });
 
   },
