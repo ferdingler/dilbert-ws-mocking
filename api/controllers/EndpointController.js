@@ -59,39 +59,6 @@ module.exports = {
     });
 
   },
-  
-  /**
-   * Action blueprints:
-   *    `/endpoint/serve`
-   */
-   serve: function (req, res) {
-
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header('Content-Type', 'application/json');
-
-    var endpointId = req.param('uuid');
-    var response = {};
-
-    Endpoint.findOne({ uuid: endpointId}, function(err, endpoint) {
-      console.log(endpoint);
-      if(endpoint.endpointType === 'custom'){
-        response = endpoint.data;
-      }else if(endpoint.endpointType === 'singlevalue'){
-        endpointData = endpoint.data[endpoint.data.length - 1];
-        response = RandomService.getRandomForType(endpointData.valueType);
-      }else if(endpoint.endpointType === 'arrayofvalues'){
-        endpointData = endpoint.data[endpoint.data.length - 1];
-        var arrayLength = chance.integer({min: 2, max: 25});
-        response = [];
-        for(var i=0;i<arrayLength;i++){
-          response.push(RandomService.getRandomForType(endpointData.valueType));
-        }
-      }
-
-      return res.send(response, endpoint.httpStatus);
-    });
-
-  },
 
 
   list: function(req, res){
