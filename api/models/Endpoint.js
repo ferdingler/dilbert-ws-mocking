@@ -15,7 +15,7 @@ module.exports = {
   		required: true
   	},
   	httpStatus: 'INTEGER',
-  	type: 'STRING',
+  	endpointType: 'STRING',
   	data: 'JSON',
     
   }

@@ -45,7 +45,7 @@ module.exports = {
 
     Endpoint.create({
       "uuid": endpointId,
-      "type": endpointType,
+      "endpointType": endpointType,
       "httpStatus": endpointHttpStatus,
       "data": endpointData
     }).done(function(err, endpoint) {
@@ -66,7 +66,6 @@ module.exports = {
    */
    serve: function (req, res) {
 
-
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Content-Type', 'application/json');
 
@@ -74,12 +73,12 @@ module.exports = {
     var response = {};
 
     Endpoint.findOne({ uuid: endpointId}, function(err, endpoint) {
-      if(endpoint.type === 'custom'){
+      if(endpoint.endpointType === 'custom'){
         response = endpoint.data;
-      }else if(endpoint.type === 'singlevalue'){
+      }else if(endpoint.endpointType === 'singlevalue'){
         endpointData = endpoint.data[endpoint.data.length - 1];
         response = RandomService.getRandomForType(endpointData.valueType);
-      }else if(endpoint.type === 'arrayofvalues'){
+      }else if(endpoint.endpointType === 'arrayofvalues'){
         endpointData = endpoint.data[endpoint.data.length - 1];
         var arrayLength = chance.integer({min: 2, max: 25});
         response = [];
