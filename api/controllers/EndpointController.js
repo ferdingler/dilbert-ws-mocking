@@ -15,14 +15,14 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+var Chance = require('chance');
+var chance = new Chance();
+
 module.exports = {
     
   create: function(req, res){
 
     res.header('Access-Control-Allow-Origin', req.headers.origin);
-
-    var Chance = require('chance');
-    var chance = new Chance();
     
     // Endpoint Attributes
     var endpointId = chance.guid();
@@ -34,7 +34,7 @@ module.exports = {
     // maybe it contains valueType
     if(endpointData === undefined){
       var valueType = req.param('valueType');
-      if(valueType != undefined && endpointType === 'singlevalue'){
+      if(valueType != undefined && endpointType != 'custom'){
         endpointData = [{
           "valueType": valueType
         }];
@@ -66,6 +66,7 @@ module.exports = {
    */
    serve: function (req, res) {
 
+
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Content-Type', 'application/json');
 
@@ -77,8 +78,13 @@ module.exports = {
         response = endpoint.data;
       }else if(endpoint.type === 'singlevalue'){
         endpointData = endpoint.data[endpoint.data.length - 1];
-        if(endpointData.valueType != 'custom'){
-          response = RandomService.getRandomForType(endpointData.valueType);
+        response = RandomService.getRandomForType(endpointData.valueType);
+      }else if(endpoint.type === 'arrayofvalues'){
+        endpointData = endpoint.data[endpoint.data.length - 1];
+        var arrayLength = chance.integer({min: 2, max: 25});
+        response = [];
+        for(var i=0;i<arrayLength;i++){
+          response.push(RandomService.getRandomForType(endpointData.valueType));
         }
       }
 

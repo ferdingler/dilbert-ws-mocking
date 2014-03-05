@@ -1,8 +1,8 @@
 // RandomService.js - in api/services
-exports.getRandomForType = function(type) {
+var Chance = require('chance');
+var chance = new Chance();
 
-	var Chance = require('chance');
-    var chance = new Chance();
+exports.getRandomForType = function(type) {
 
     return chance[type]();
 
