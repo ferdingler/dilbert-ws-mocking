@@ -45,7 +45,7 @@ module.exports = {
 
     Endpoint.create({
       "uuid": endpointId,
-      "endpointType": endpointType,
+      "type": endpointType,
       "httpStatus": endpointHttpStatus,
       "data": endpointData
     }).done(function(err, endpoint) {
@@ -56,6 +56,33 @@ module.exports = {
 
       return res.json(endpointId);
       
+    });
+
+  },
+
+  serve: function (req, res) {
+
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Content-Type', 'application/json');
+
+    var endpointId = req.param('uuid');
+    var response = null;
+
+    Endpoint.findOne({ uuid: endpointId}, function(err, endpoint) {
+      if(endpoint.type === 'custom'){
+        response = endpoint.data;
+      }else if(endpoint.type === 'singlevalue'){
+        endpointData = endpoint.data[endpoint.data.length - 1];
+        response = RandomService.getRandomForType(endpointData.valueType);
+      }else if(endpoint.type === 'arrayofvalues'){
+        endpointData = endpoint.data[endpoint.data.length - 1];
+        var arrayLength = chance.integer({min: 2, max: 25});
+        response = [];
+        for(var i=0;i<arrayLength;i++){
+          response.push(RandomService.getRandomForType(endpointData.valueType));
+        }
+      }
+      return res.send(response, endpoint.httpStatus);
     });
 
   },
