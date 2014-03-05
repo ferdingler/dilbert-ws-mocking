@@ -73,6 +73,7 @@ module.exports = {
     var response = {};
 
     Endpoint.findOne({ uuid: endpointId}, function(err, endpoint) {
+      console.log(endpoint);
       if(endpoint.endpointType === 'custom'){
         response = endpoint.data;
       }else if(endpoint.endpointType === 'singlevalue'){
