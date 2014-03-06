@@ -14,10 +14,16 @@ module.exports = {
   		type: 'uuid',
   		required: true
   	},
-  	httpStatus: 'INTEGER',
-  	type: 'STRING',
-  	data: 'JSON',
-    
+  	httpStatus: {
+      type: 'INTEGER',
+      defaultsTo: 200
+    },
+  	type: {
+      type: 'STRING',
+      required: true,
+      defaultsTo: 'custom'
+    },
+  	data: 'JSON'
   }
 
 };
