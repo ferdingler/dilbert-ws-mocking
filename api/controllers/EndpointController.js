@@ -29,19 +29,7 @@ module.exports = {
     var endpointType = req.param('type');
     var endpointHttpStatus = req.param('httpStatus');
     var endpointData = req.param('data');
-
-    // If the request does not contain data,
-    // maybe it contains valueType
-    if(endpointData === undefined){
-      var valueType = req.param('valueType');
-      if(valueType != undefined && endpointType != 'custom'){
-        endpointData = [{
-          "valueType": valueType
-        }];
-      }else{
-        return res.json('Error creating endpoint');
-      }
-    }
+    var valueType = req.param('valueType');
 
     Endpoint.create({
       "uuid": endpointId,
@@ -69,20 +57,41 @@ module.exports = {
     var response = null;
 
     Endpoint.findOne({ uuid: endpointId}, function(err, endpoint) {
+      
       if(endpoint.type === 'custom'){
+        
         response = endpoint.data;
+
       }else if(endpoint.type === 'singlevalue'){
-        endpointData = endpoint.data[endpoint.data.length - 1];
+        
+        endpointData = endpoint.data[0];
         response = RandomService.getRandomForType(endpointData.valueType);
+
       }else if(endpoint.type === 'arrayofvalues'){
-        endpointData = endpoint.data[endpoint.data.length - 1];
+        
+        endpointData = endpoint.data[0];
         var arrayLength = chance.integer({min: 2, max: 25});
         response = [];
         for(var i=0;i<arrayLength;i++){
           response.push(RandomService.getRandomForType(endpointData.valueType));
         }
+
+      }else if(endpoint.type === 'arrayofobjects'){
+
+        response = [];
+        var arrayLength = chance.integer({min: 2, max: 25});
+        for(var i=0; i<arrayLength; i++){
+          var newObject = {};
+          for(var j=0; j<endpoint.data.length; j++){
+            newObject[endpoint.data[j].keyName] = RandomService.getRandomForType(endpoint.data[j].valueType);
+          }   
+          response.push(newObject);
+        }
+
       }
+
       return res.send(response, endpoint.httpStatus);
+
     });
 
   },
