@@ -23,7 +23,7 @@ exports.serve_custom = function(endpoint){
 
 exports.serve_singlevalue = function(endpoint){
 	var endpointData = endpoint.data[0];
-	return RandomService.getRandomForType(endpointData.valueType);
+	return "" + RandomService.getRandomForType(endpointData.valueType);
 };
 
 exports.serve_arrayofvalues = function(endpoint){
