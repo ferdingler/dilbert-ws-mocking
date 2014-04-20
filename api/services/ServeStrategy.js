@@ -23,7 +23,12 @@ exports.serve_custom = function(endpoint){
 
 exports.serve_singlevalue = function(endpoint){
 	var endpointData = endpoint.data[0];
-	return "" + RandomService.getRandomForType(endpointData.valueType);
+  var dataResponse = RandomService.getRandomForType(endpointData.valueType);
+  if(dataResponse instanceof Object){
+    return dataResponse;
+  }else{
+    return "" + dataResponse; 
+  }
 };
 
 exports.serve_arrayofvalues = function(endpoint){
