@@ -36,7 +36,7 @@ module.exports.routes = {
     view: 'home/index'
   },
 
-  '/:uuid': {
+  '/mock/:uuid': {
     controller: 'endpoint',
     action: 'serve'
   },

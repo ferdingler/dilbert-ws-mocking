@@ -11,7 +11,7 @@ exports.serve = function(endpoint) {
 	try{
 		response = ServeStrategy['serve_' + endpoint.type](endpoint);
 	} catch(err){
-		console.log('Strategy not found ' + endpoint.uuid + ' : ' + endpoint.type);
+		console.log('Strategy not found for endpoint: ' + err);
 	}
 	
 	return response;
