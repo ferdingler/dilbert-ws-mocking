@@ -11,8 +11,6 @@ var chance = new Chance();
 module.exports = {
     
   create: function(req, res){
-
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
     
     // Endpoint Attributes
     var endpointId = chance.guid();
