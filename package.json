@@ -1,8 +1,8 @@
 {
-    "name": "dilbert",
+    "name": "DilbertMock",
     "private": true,
-    "version": "0.0.0",
-    "description": "a Sails application",
+    "version": "0.0.1",
+    "description": "An application for mocking webservices",
     "dependencies": {
         "sails": "0.9.11",
         "grunt": "0.4.1",
